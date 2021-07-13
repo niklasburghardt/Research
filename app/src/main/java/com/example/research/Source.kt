@@ -5,16 +5,20 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.webkit.WebView
 import android.widget.ExpandableListView
 
 class Source : AppCompatActivity() {
-
+    private lateinit var webView: WebView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
 
         val title: String = intent.getStringExtra("NAME").toString()
         setTitle(title)
+
+        webView = findViewById(R.id.webView)
+        webView.loadUrl("https://github.com/niklasburghardt/Research")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
