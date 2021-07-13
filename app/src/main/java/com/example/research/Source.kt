@@ -15,10 +15,11 @@ class Source : AppCompatActivity() {
         setContentView(R.layout.activity_source)
 
         val title: String = intent.getStringExtra("NAME").toString()
+        val link: String = intent.getStringExtra("LINK").toString()
         setTitle(title)
 
         webView = findViewById(R.id.webView)
-        webView.loadUrl("https://github.com/niklasburghardt/Research")
+        webView.loadUrl(link)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

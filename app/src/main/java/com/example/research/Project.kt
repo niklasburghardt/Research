@@ -1,11 +1,13 @@
 package com.example.research
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
@@ -14,27 +16,29 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class Project : AppCompatActivity() {
     private lateinit var sources: ListView
     private lateinit var addNewSource: FloatingActionButton
+    private lateinit var adapter: SourceTileAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
+
+        adapter = SourceTileAdapter(this)
+        val list = findViewById<ListView>(R.id.sources_list)
+        list.adapter = adapter
+        list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val source = adapter.getItem(position) as SourceData
+            val title = source.title
+            val link = source.link
+            intent = Intent(this, Source::class.java)
+            intent.putExtra("NAME", title)
+            intent.putExtra("LINK", link)
+            startActivity(intent)
+        }
 
         val appName: String = intent.getStringExtra("NAME").toString()
         setTitle(appName)
 
 
-        sources = findViewById(R.id.sources_list)
-        val arrayAdapter: ArrayAdapter<*>
-        val testTitles = arrayOf(
-            "Rom", "Paris", "Berlin", "Madrid"
-        )
 
-        arrayAdapter = ArrayAdapter(this,
-            android.R.layout.simple_list_item_1, testTitles)
-        sources.adapter = arrayAdapter
-
-        sources.setOnItemClickListener { parent, view, position, id ->
-            openSourcePage(testTitles.get(position))
-        }
         addNewSource = findViewById(R.id.newSourceProject)
 
         addNewSource.setOnClickListener(fun(_:View){
