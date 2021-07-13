@@ -23,16 +23,18 @@ class AddNewSource : AppCompatActivity() {
             "Rom", "Paris", "Berlin", "Madrid"
         )
         if (selectProject != null) {
-            val adapter = ArrayAdapter(this,
-                android.R.layout.simple_spinner_item, projects)
+            val adapter = ArrayAdapter(
+                this,
+                android.R.layout.simple_spinner_item, projects
+            )
             selectProject.adapter = adapter
 
-        addButton = findViewById(R.id.addCreatedSource)
-        addButton.setOnClickListener(fun(_:View){
-            title = titleView.text.toString()
+            addButton = findViewById(R.id.addCreatedSource)
+            addButton.setOnClickListener(fun(_: View) {
+                title = titleView.text.toString()
 
-            intent = Intent(this, Project::class.java)
-            intent.putExtra("TITLE", title)
-        })
-    }
-}
+                intent = Intent(this, Project::class.java)
+                intent.putExtra("TITLE", title)
+            })
+        }
+    }}
