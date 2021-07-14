@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Research">
-        <activity android:name=".NotesActivity"></activity>
-        <activity android:name=".AddNewProject" />
+        <activity android:name=".NotesActivity" android:label="@string/add_notes" android:parentActivityName=".Source"></activity>
+        <activity android:name=".AddNewProject" android:label="@string/add_project" android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".SourceDetails"
             android:label="@string/details_name"
@@ -20,7 +20,7 @@
         <activity
             android:name=".ProjectDetails"
             android:label="@string/details_name"
-            android:launchMode="singleInstance"
+
             android:parentActivityName=".Project" />
         <activity
             android:name=".AddNewSource"
@@ -29,9 +29,11 @@
         <activity
             android:name=".Source"
             android:label="No Name"
+            android:launchMode="singleTop"
             android:parentActivityName=".Project" />
         <activity
             android:name=".Project"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
