@@ -1,5 +1,8 @@
 package com.example.research
 
+
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,8 +44,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             projectTitle = itemView.findViewById(R.id.project_title)
             projectDetail = itemView.findViewById(R.id.project_detail)
             dueDate = itemView.findViewById(R.id.project_due_date)
+
+            
         }
+
     }
+
+
 
 }
 

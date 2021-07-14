@@ -1,15 +1,12 @@
 package com.example.research
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
-import androidx.fragment.app.ListFragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -17,7 +14,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class MainActivity : AppCompatActivity() {
 
     private lateinit var newSourceMain: FloatingActionButton
-    private lateinit var projectList: ListView
 
     private lateinit var layoutManager: LinearLayoutManager
     
@@ -29,12 +25,12 @@ class MainActivity : AppCompatActivity() {
 
         recycler_view = findViewById(R.id.project_card_list)
 
-        layoutManager = LinearLayoutManager(this)
-        layoutManager.offsetChildrenHorizontal(0)
+        layoutManager = GridLayoutManager(this, 2)
         recycler_view.layoutManager = layoutManager
 
         adapter = RecyclerAdapter()
         recycler_view.adapter = adapter
+
 
 
         newSourceMain = findViewById(R.id.newSourceMain)
@@ -47,19 +43,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         })
 
-        projectList = findViewById(R.id.projects_list)
-        val arrayAdapter: ArrayAdapter<*>
-        val testTitles = arrayOf(
-            "Rom", "Paris", "Berlin", "Madrid"
-        )
-
-        arrayAdapter = ArrayAdapter(this,
-            android.R.layout.simple_list_item_1, testTitles)
-        projectList.adapter = arrayAdapter
-
-        projectList.setOnItemClickListener { parent, view, position, id ->
-            openProject(testTitles.get(position))
-        }
 
     }
 
