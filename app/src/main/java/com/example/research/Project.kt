@@ -11,12 +11,14 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
+import com.example.research.Dialogs.AlertFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Project : AppCompatActivity() {
     private lateinit var sources: ListView
     private lateinit var addNewSource: FloatingActionButton
     private lateinit var adapter: SourceTileAdapter
+    private lateinit var alertFragment: AlertFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
@@ -47,6 +49,14 @@ class Project : AppCompatActivity() {
             intent.putExtra("PROJECT", "projectna")
             startActivity(intent)
         })
+
+        alertFragment = AlertFragment()
+        list.onItemLongClickListener = AdapterView.OnItemLongClickListener {_, _, position, _ ->
+            alertFragment.show(supportFragmentManager, AlertFragment.TAG)
+            return@OnItemLongClickListener true
+        }
+
+
 
 
     }
