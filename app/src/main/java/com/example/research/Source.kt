@@ -18,12 +18,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class Source : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var openNotes: FloatingActionButton
+    private lateinit var link: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
 
         val title: String = intent.getStringExtra("NAME").toString()
-        val link: String = intent.getStringExtra("LINK").toString()
+        link= intent.getStringExtra("LINK").toString()
         setTitle(title)
 
         webView = findViewById(R.id.webView)
@@ -60,6 +61,7 @@ class Source : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.details_source -> openDetailsPage()
+            R.id.open_browser -> openPageInBrowser()
             else -> return true
         }
         return super.onOptionsItemSelected(item)
@@ -69,6 +71,12 @@ class Source : AppCompatActivity() {
         intent = Intent(this, SourceDetails::class.java)
         //extras hinzufügen um datenbank nicht neu aufrufen zu müssen
         startActivity(intent)
+        return true
+    }
+    private fun openPageInBrowser():Boolean {
+        val uri = Uri.parse(link)
+        val webIntent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(webIntent)
         return true
     }
 }
