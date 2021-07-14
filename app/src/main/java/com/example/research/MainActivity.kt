@@ -3,8 +3,6 @@ package com.example.research
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,14 +10,18 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import androidx.fragment.app.ListFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var newSourceMain: FloatingActionButton
     private lateinit var projectList: ListView
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
+
+    private lateinit var layoutManager: LinearLayoutManager
+    
+    private var adapter: RecyclerAdapter? = null
     private lateinit var recycler_view: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         recycler_view = findViewById(R.id.project_card_list)
 
         layoutManager = LinearLayoutManager(this)
+        layoutManager.offsetChildrenHorizontal(0)
         recycler_view.layoutManager = layoutManager
 
         adapter = RecyclerAdapter()
