@@ -16,10 +16,12 @@ import kotlin.collections.ArrayList
 class SourceTileAdapter(context:Context):BaseAdapter(){
     private val inflater = LayoutInflater.from(context)
     //hardcoded values that will be replaced by a relational database
-    private val titles = arrayListOf("Architektur", "Politik", "Wirtschaft", "Recht", "Informatik", "Ingenieurswesen")
+    private val titles = arrayListOf("Architektur", "Politik", "Wirtschaft", "Recht", "Informatik", "Ingenieurswesen", "Ingenieurswesen", "Ingenieurswesen"
+        , "Ingenieurswesen", "Ingenieurswesen")
     private val links = arrayListOf("https://www.google.com/search?q=architektur", "https://www.google.com/search?q=Politik",
                 "https://www.google.com/search?q=Wirtschaft", "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Informatik","" +
-                "https://www.google.com/search?q=Ingenieurswesen")
+                "https://www.google.com/search?q=Ingenieurswesen", "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Recht"
+        , "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Recht")
     private val dates = arrayListOf("13.05", "13.05", "13.05", "13.05", "13.05", "13.05")
     private val listTiles = ArrayList<SourceData>()
 

@@ -7,14 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ExpandableListView
 import androidx.annotation.RequiresApi
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Source : AppCompatActivity() {
     private lateinit var webView: WebView
+    private lateinit var openNotes: FloatingActionButton
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
@@ -24,7 +27,7 @@ class Source : AppCompatActivity() {
         setTitle(title)
 
         webView = findViewById(R.id.webView)
-        val uri = Uri.parse("https://www.github.com")
+        val uri = Uri.parse(link)
         webView.loadUrl(uri.toString())
 
         webView.webViewClient = object : WebViewClient() {
@@ -42,6 +45,11 @@ class Source : AppCompatActivity() {
             }
 
         }
+        openNotes = findViewById(R.id.open_notes_button)
+        openNotes.setOnClickListener(fun(_:View){
+            intent = Intent(this, NotesActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

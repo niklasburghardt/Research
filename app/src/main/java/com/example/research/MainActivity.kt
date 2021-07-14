@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var newSourceMain: FloatingActionButton
 
     private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var testOpen: Button
     
     private var adapter: RecyclerAdapter? = null
     private lateinit var recycler_view: RecyclerView
@@ -31,13 +33,21 @@ class MainActivity : AppCompatActivity() {
         adapter = RecyclerAdapter()
         recycler_view.adapter = adapter
 
+        testOpen = findViewById(R.id.test_open)
+        testOpen.setOnClickListener(fun(_:View){
+            intent = Intent(this, Project::class.java)
+            intent.putExtra("NAME", "Studiengänge")
+            startActivity(intent)
+        })
+
+
 
 
         newSourceMain = findViewById(R.id.newSourceMain)
 
 
         newSourceMain.setOnClickListener(fun(_:View) {
-            intent = Intent(this, AddNewSource::class.java)
+            intent = Intent(this, AddNewProject::class.java)
             intent.putExtra("FAVORITE", false)
             intent.putExtra("PROJECT", "")
             startActivity(intent)

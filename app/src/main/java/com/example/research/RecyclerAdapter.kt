@@ -44,10 +44,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             projectTitle = itemView.findViewById(R.id.project_title)
             projectDetail = itemView.findViewById(R.id.project_detail)
             dueDate = itemView.findViewById(R.id.project_due_date)
-
-            
         }
-
     }
 
 
