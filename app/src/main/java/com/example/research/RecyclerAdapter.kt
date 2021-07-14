@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
@@ -22,7 +23,13 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.project_card, viewGroup, false)
-        return ViewHolder(v)
+        val vh = ViewHolder(v)
+        v.setOnClickListener {
+            println(vh.projectTitle.text)
+        }
+
+
+        return vh
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
         viewHolder.projectTitle.text = titles[i]
