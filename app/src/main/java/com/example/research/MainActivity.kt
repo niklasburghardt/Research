@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun openProject(projectName: String){
+    public fun openProject(projectName: String){
         intent = Intent(this, Project::class.java)
         intent.putExtra("NAME", projectName)
         startActivity(intent)

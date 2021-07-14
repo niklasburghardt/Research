@@ -25,7 +25,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.ViewHolder>() {
             .inflate(R.layout.project_card, viewGroup, false)
         val vh = ViewHolder(v)
         v.setOnClickListener {
-            println(vh.projectTitle.text)
+            println(vh.projectTitle.text.toString())
         }
 
 

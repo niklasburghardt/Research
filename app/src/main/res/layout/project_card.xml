@@ -12,7 +12,7 @@
     card_view:contentPadding="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="196dp"
+        android:layout_width="383dp"
         android:layout_height="132dp"
         android:padding="16dp">
 

@@ -31,10 +31,8 @@ class AddNewSource : AppCompatActivity() {
 
             addButton = findViewById(R.id.addCreatedSource)
             addButton.setOnClickListener(fun(_: View) {
-                title = titleView.text.toString()
-
-                intent = Intent(this, Project::class.java)
-                intent.putExtra("TITLE", title)
+                //add to database
+                finish()
             })
         }
     }}
