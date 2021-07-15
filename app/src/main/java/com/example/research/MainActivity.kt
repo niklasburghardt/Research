@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         layoutManager = GridLayoutManager(this, 2)
         recycler_view.layoutManager = layoutManager
 
-        adapter = RecyclerAdapter()
+        adapter = RecyclerAdapter(context = this)
         recycler_view.adapter = adapter
 
         testOpen = findViewById(R.id.test_open)

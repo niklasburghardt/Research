@@ -9,6 +9,7 @@ import android.widget.DatePicker
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDialogFragment
 import com.example.research.Dialogs.DatePickerFragment
+import com.example.research.database.DatabaseOpenHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
@@ -18,6 +19,8 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     private lateinit var titleInput: TextView
     private lateinit var detailsInput: TextView
 
+    private lateinit var openHelper: DatabaseOpenHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_project)
@@ -26,14 +29,15 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         buttonDatePicker.setOnClickListener{
             datePickerFragment.show(supportFragmentManager, DatePickerFragment.TAG)
         }
-        createProject = findViewById(R.id.addCreatedProject)
-        createProject.setOnClickListener(fun(_:View){
-            //add to database
-            finish()
-        })
+        openHelper = DatabaseOpenHelper(this)
 
         titleInput = findViewById(R.id.project_title_input)
         detailsInput = findViewById(R.id.project_details_input)
+        createProject = findViewById(R.id.addCreatedProject)
+        createProject.setOnClickListener(fun(_:View){
+            openHelper.insertProject(titleInput.text.toString(), detailsInput.text.toString(), buttonDatePicker.text.toString())
+            finish()
+        })
 
 
 
@@ -41,5 +45,10 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         buttonDatePicker.text = "$dayOfMonth.$month.$year"
+    }
+
+    override fun onPause() {
+        super.onPause()
+        openHelper.close()
     }
 }

@@ -19,12 +19,12 @@
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <EditText
-        android:id="@+id/titelTextfield"
+        android:id="@+id/source_title_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:ems="10"
         android:hint="Title"
         android:imeActionLabel="Projektname"
@@ -33,34 +33,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName3"
+        android:id="@+id/source_link_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Beschreibung"
-        android:imeActionLabel="Projektname"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titelTextfield" />
-
-    <EditText
-        android:id="@+id/editTextTextPersonName4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
         android:hint="Link der Website"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
+        app:layout_constraintTop_toBottomOf="@+id/source_title_input" />
 
     <Switch
-        android:id="@+id/switch1"
+        android:id="@+id/source_is_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -69,10 +55,10 @@
         android:text="Favorit "
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName4" />
+        app:layout_constraintTop_toBottomOf="@+id/source_link_input" />
 
     <Spinner
-        android:id="@+id/spinner2"
+        android:id="@+id/source_select_project"
         android:layout_width="198dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
@@ -81,7 +67,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.891"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/source_is_favorite" />
 
     <TextView
         android:id="@+id/textView"
@@ -94,6 +80,6 @@
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch1" />
+        app:layout_constraintTop_toBottomOf="@+id/source_is_favorite" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

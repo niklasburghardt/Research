@@ -14,6 +14,7 @@ class AlertFragment : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if(context is DialogInterface.OnClickListener) {
+            //TODO: Bedingung wird nicht erfüllt und listener wird nicht initalisiert
             listener = context
         }
     }
