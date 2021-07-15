@@ -26,6 +26,7 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
         db = DatabaseOpenHelper(context)
         listTiles = ArrayList()
         viewData()
+        getAmountSources()
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -35,6 +36,7 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
         v.setOnClickListener {
             val intent = Intent(mCon, Project::class.java)
             intent.putExtra("NAME", vh.projectTitle.text)
+            intent.putExtra("PROJECT_ID", vh.id.toString())
             startActivity(mCon, intent, null)
 
         }
@@ -46,6 +48,7 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
         viewHolder.projectTitle.text = listTiles[i].title
         viewHolder.projectDetail.text = listTiles[i].details
         viewHolder.dueDate.text = listTiles[i].dueDate
+        viewHolder.id = listTiles[i].id
     }
     override fun getItemCount(): Int {
         return listTiles.size
@@ -56,6 +59,7 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
         var projectTitle: TextView
         var projectDetail: TextView
         var dueDate: TextView
+        var id: Int = 0
 
         init {
 
@@ -70,7 +74,20 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
             return ArrayList()
         }
         while(cursor.moveToNext()){
-            listTiles.add(ProjectData(cursor.getString(1), "13 Quellenangaben", cursor.getString(3)))
+            listTiles.add(ProjectData(cursor.getString(1), "13 Quellenangaben", cursor.getString(3), cursor.getInt(0)))
+        }
+        return listTiles
+    }
+
+    private fun getAmountSources(): ArrayList<ProjectData>{
+        for(i: Int in 0 until listTiles.size) {
+            val cursor: Cursor = db.getAmountOfSources(listTiles[i].id)
+            if (cursor.count == 0) {
+                return listTiles
+            }
+            while (cursor.moveToNext()) {
+                listTiles[i].details = cursor.getString(0) +" Quellenangaben"
+            }
         }
         return listTiles
     }

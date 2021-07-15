@@ -24,6 +24,7 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_project)
+
         datePickerFragment = DatePickerFragment()
         buttonDatePicker = findViewById(R.id.button_date_picker)
         buttonDatePicker.setOnClickListener{

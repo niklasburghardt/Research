@@ -21,11 +21,36 @@ class Project : AppCompatActivity() {
     private lateinit var addNewSource: FloatingActionButton
     private lateinit var adapter: SourceTileAdapter
     private lateinit var alertFragment: AlertFragment
+    private lateinit var appName:String
+    private lateinit var projectId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
-        val appName: String = intent.getStringExtra("NAME").toString()
+        appName = intent.getStringExtra("NAME").toString()
+        projectId = intent.getStringExtra("PROJECT_ID").toString()
         setTitle(appName)
+
+        createList()
+
+
+        addNewSource = findViewById(R.id.newSourceProject)
+
+        addNewSource.setOnClickListener(fun(_:View){
+            intent = Intent(this, AddNewSource::class.java)
+            intent.putExtra("FAVORITE", false)
+            intent.putExtra("PROJECT", appName)
+            startActivity(intent)
+        })
+
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        createList()
+    }
+
+    private fun createList(){
+
         adapter = SourceTileAdapter(this, appName)
 
         val list = findViewById<ListView>(R.id.sources_list)
@@ -34,29 +59,22 @@ class Project : AppCompatActivity() {
             val source = adapter.getItem(position) as SourceData
             val title = source.title
             val link = source.link
+            val id = source.id.toString()
+            val notes = source.notes
             intent = Intent(this, Source::class.java)
             intent.putExtra("NAME", title)
             intent.putExtra("LINK", link)
+            intent.putExtra("ID", id)
+            intent.putExtra("NOTES", notes)
             startActivity(intent)
         }
-
-
-
-        addNewSource = findViewById(R.id.newSourceProject)
-
-        addNewSource.setOnClickListener(fun(_:View){
-            intent = Intent(this, AddNewSource::class.java)
-            intent.putExtra("FAVORITE", false)
-            intent.putExtra("PROJECT", "projectna")
-            startActivity(intent)
-        })
-        alertFragment = AlertFragment()
-        list.onItemLongClickListener = AdapterView.OnItemLongClickListener {_, _, position, _ ->
-            alertFragment.show(supportFragmentManager, AlertFragment.TAG)
-            return@OnItemLongClickListener true
-        }
-
     }
+
+    override fun onStart() {
+        super.onStart()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
 
     private fun openSourcePage(sourceTitle:String) {
         intent = Intent(this, Source::class.java)
@@ -72,7 +90,8 @@ class Project : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.details -> openDetailsPage()
-            R.id.delete_project -> return true
+            R.id.delete_project -> deleteCurrentProject()
+            android.R.id.home -> stopApp()
             else -> return true
         }
     }
@@ -84,6 +103,16 @@ class Project : AppCompatActivity() {
     private fun openDetailsPage(): Boolean {
         intent = Intent(this, ProjectDetails::class.java)
         startActivity(intent)
+        return true
+    }
+    private fun stopApp(): Boolean {
+        finish()
+        return true
+    }
+    private fun deleteCurrentProject():Boolean{
+        val db = DatabaseOpenHelper(this)
+        db.deleteProject(projectId.toInt())
+        finish()
         return true
     }
 

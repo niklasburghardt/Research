@@ -120,6 +120,51 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         return cursor
     }
+    fun viewNotes(id: Int):Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT * FROM $tableSourceName WHERE $sourceId == $id"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
+    fun getAmountOfSources(id: Int):Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT COUNT(*) FROM project, source WHERE project.title = source.project_id AND project._id == $id"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
+
+    fun updateSourceNotes(id: Int, newNotesText: String){
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(sourceNotes, newNotesText)
+        val sourceUpdated = db.update(
+            tableSourceName,
+            values, "$sourceId = ?", arrayOf(id.toString())
+        )
+        Log.d(TAG, "update(): id=$id -> $sourceUpdated")
+
+    }
+    fun deleteProject(id: Int){
+        val db = writableDatabase
+        val projectDeleted = db.delete(
+            tableProjectName,
+            "$projectId = ?",
+            arrayOf(id.toString())
+        )
+        Log.d("TAG", "deleted")
+
+        
+    }
+    fun deleteSource(id: Int){
+        val db = writableDatabase
+        val sourceDeleted = db.delete(
+            tableSourceName,
+            "$sourceId = ?",
+            arrayOf(id.toString())
+        )
+    }
 
 
 

@@ -13,18 +13,22 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ExpandableListView
 import androidx.annotation.RequiresApi
+import com.example.research.database.DatabaseOpenHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Source : AppCompatActivity() {
     private lateinit var webView: WebView
     private lateinit var openNotes: FloatingActionButton
     private lateinit var link: String
+    private lateinit var id: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
 
         val title: String = intent.getStringExtra("NAME").toString()
         link= intent.getStringExtra("LINK").toString()
+        id = intent.getStringExtra("ID").toString()
+        val notes = intent.getStringExtra("NOTES")
         setTitle(title)
 
         webView = findViewById(R.id.webView)
@@ -49,8 +53,15 @@ class Source : AppCompatActivity() {
         openNotes = findViewById(R.id.open_notes_button)
         openNotes.setOnClickListener(fun(_:View){
             intent = Intent(this, NotesActivity::class.java)
+            intent.putExtra("ID", id)
+            intent.putExtra("NOTES", notes)
             startActivity(intent)
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -62,9 +73,23 @@ class Source : AppCompatActivity() {
         return when(item.itemId){
             R.id.details_source -> openDetailsPage()
             R.id.open_browser -> openPageInBrowser()
+            R.id.delete_source -> deleteSource()
+            android.R.id.home -> finishApp()
             else -> return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun deleteSource(): Boolean {
+        val db = DatabaseOpenHelper(this)
+        db.deleteSource(id.toInt())
+        finish()
+        return true
+    }
+
+    private fun finishApp():Boolean{
+        finish()
+        return true
     }
 
     private fun openDetailsPage(): Boolean{

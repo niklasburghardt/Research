@@ -23,6 +23,7 @@ class AddNewSource : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_source)
+        val projectName = intent.getStringExtra("PROJECT").toString()
         db = DatabaseOpenHelper(this)
         projects = ArrayList()
         viewData()
@@ -34,6 +35,7 @@ class AddNewSource : AppCompatActivity() {
             )
             selectProject.adapter = adapter
         }
+        selectProject.setSelection(projects.indexOf(projectName))
 
         titleInput = findViewById(R.id.source_title_input)
         linkInput = findViewById(R.id.source_link_input)

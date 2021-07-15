@@ -18,15 +18,30 @@ class MainActivity : AppCompatActivity() {
     private lateinit var newSourceMain: FloatingActionButton
 
     private lateinit var layoutManager: LinearLayoutManager
-    private lateinit var testOpen: Button
+
     
     private var adapter: RecyclerAdapter? = null
     private lateinit var recycler_view: RecyclerView
     private lateinit var db: DatabaseOpenHelper
+    init {
+        db = DatabaseOpenHelper(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        db = DatabaseOpenHelper(this)
+
+
+        createList()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        createList()
+    }
+
+    private fun createList(){
+
 
         recycler_view = findViewById(R.id.project_card_list)
 
@@ -35,16 +50,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter = RecyclerAdapter(context = this)
         recycler_view.adapter = adapter
-
-        testOpen = findViewById(R.id.test_open)
-        testOpen.setOnClickListener(fun(_:View){
-            intent = Intent(this, Project::class.java)
-            intent.putExtra("NAME", "Studiengänge")
-            startActivity(intent)
-        })
-
-
-
 
         newSourceMain = findViewById(R.id.newSourceMain)
 
@@ -55,8 +60,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("PROJECT", "")
             startActivity(intent)
         })
-
-
     }
 
 

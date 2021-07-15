@@ -72,7 +72,7 @@ class SourceTileAdapter(context:Context, val projectName: String):BaseAdapter(){
             return ArrayList()
         }
         while(cursor.moveToNext()){
-            listTiles.add(SourceData(cursor.getString(1), cursor.getString(3), ""))
+            listTiles.add(SourceData(cursor.getString(1), cursor.getString(3), "", cursor.getInt(0), cursor.getString(2)))
         }
         return listTiles
     }
