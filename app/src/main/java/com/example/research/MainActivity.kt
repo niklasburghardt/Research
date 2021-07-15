@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.research.database.DatabaseOpenHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity : AppCompatActivity() {
@@ -21,9 +22,11 @@ class MainActivity : AppCompatActivity() {
     
     private var adapter: RecyclerAdapter? = null
     private lateinit var recycler_view: RecyclerView
+    private lateinit var db: DatabaseOpenHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        db = DatabaseOpenHelper(this)
 
         recycler_view = findViewById(R.id.project_card_list)
 

@@ -3,6 +3,7 @@ package com.example.research.database
 import android.content.ClipDescription
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
@@ -103,6 +104,21 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         }finally {
             Log.d(TAG, "insert(): rowId=$rowId")
         }
+    }
+
+    fun viewSourceData(project_title: String):Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT * FROM $tableSourceName, $tableProjectName WHERE project.title == source.project_id AND project.title == '$project_title'"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
+    fun viewProjectData():Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT * FROM $tableProjectName"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
     }
 
 

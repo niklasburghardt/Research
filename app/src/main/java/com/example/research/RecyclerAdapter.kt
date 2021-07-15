@@ -4,12 +4,14 @@ package com.example.research
 import android.app.PendingIntent.getActivity
 import android.content.Context
 import android.content.Intent
+import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.research.database.DatabaseOpenHelper
 import kotlin.coroutines.coroutineContext
 
 
@@ -17,12 +19,14 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
 
     //hardcoded values will be replaced by database later
 
-    private val titles = arrayOf("Rom", "Studiengänge", "Geschichte")
-
-    private val details = arrayOf("13 Quellen", "6 Quellen", "4 Quellen")
-
-    private val dueDate = arrayOf("bis 13.05", "bis 09.02", "bis 03.05")
     private var mCon: Context = context
+    private lateinit var listTiles: ArrayList<ProjectData>
+    private lateinit var db: DatabaseOpenHelper
+    init {
+        db = DatabaseOpenHelper(context)
+        listTiles = ArrayList()
+        viewData()
+    }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val v = LayoutInflater.from(viewGroup.context)
@@ -39,12 +43,12 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
         return vh
     }
     override fun onBindViewHolder(viewHolder: ViewHolder, i: Int) {
-        viewHolder.projectTitle.text = titles[i]
-        viewHolder.projectDetail.text = details[i]
-        viewHolder.dueDate.text = dueDate[i]
+        viewHolder.projectTitle.text = listTiles[i].title
+        viewHolder.projectDetail.text = listTiles[i].details
+        viewHolder.dueDate.text = listTiles[i].dueDate
     }
     override fun getItemCount(): Int {
-        return titles.size
+        return listTiles.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -59,6 +63,16 @@ class RecyclerAdapter(context: Context) : RecyclerView.Adapter<RecyclerAdapter.V
             projectDetail = itemView.findViewById(R.id.project_detail)
             dueDate = itemView.findViewById(R.id.project_due_date)
         }
+    }
+    private fun viewData():ArrayList<ProjectData>{
+        val cursor: Cursor = db.viewProjectData()
+        if(cursor.count == 0){
+            return ArrayList()
+        }
+        while(cursor.moveToNext()){
+            listTiles.add(ProjectData(cursor.getString(1), "13 Quellenangaben", cursor.getString(3)))
+        }
+        return listTiles
     }
 
 

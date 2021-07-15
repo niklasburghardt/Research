@@ -1,5 +1,6 @@
 package com.example.research
 
+import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,14 +18,15 @@ class AddNewSource : AppCompatActivity() {
     private lateinit var isFavorite: Switch
     private lateinit var selectProject: Spinner
     private lateinit var openHelper: DatabaseOpenHelper
+    private lateinit var projects: ArrayList<String>
+    private lateinit var db: DatabaseOpenHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_source)
-
+        db = DatabaseOpenHelper(this)
+        projects = ArrayList()
+        viewData()
         selectProject = findViewById(R.id.source_select_project)
-        val projects = arrayOf(
-            "Rom", "Paris", "Berlin", "Madrid"
-        )
         if (selectProject != null) {
             val adapter = ArrayAdapter(
                 this,
@@ -48,5 +50,14 @@ class AddNewSource : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         openHelper.close()
+    }
+    private fun viewData(){
+        val cursor: Cursor = db.viewProjectData()
+        if(cursor.count == 0){
+            return
+        }
+        while(cursor.moveToNext()){
+            projects.add(cursor.getString(1))
+        }
     }
 }

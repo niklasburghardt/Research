@@ -1,35 +1,27 @@
 package com.example.research
 
 import android.content.Context
+import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.ListView
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import org.w3c.dom.Text
-import java.util.*
+import com.example.research.database.DatabaseOpenHelper
 import kotlin.collections.ArrayList
 
-class SourceTileAdapter(context:Context):BaseAdapter(){
+class SourceTileAdapter(context:Context, val projectName: String):BaseAdapter(){
     private val inflater = LayoutInflater.from(context)
-    //hardcoded values that will be replaced by a relational database
-    private val titles = arrayListOf("Architektur", "Politik", "Wirtschaft", "Recht", "Informatik", "Ingenieurswesen", "Ingenieurswesen", "Ingenieurswesen"
-        , "Ingenieurswesen", "Ingenieurswesen")
-    private val links = arrayListOf("https://www.google.com/search?q=architektur", "https://www.google.com/search?q=Politik",
-                "https://www.google.com/search?q=Wirtschaft", "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Informatik","" +
-                "https://www.google.com/search?q=Ingenieurswesen", "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Recht"
-        , "https://www.google.com/search?q=Recht", "https://www.google.com/search?q=Recht")
-    private val dates = arrayListOf("13.05", "13.05", "13.05", "13.05", "13.05", "13.05")
-    private val listTiles = ArrayList<SourceData>()
+
+    private lateinit var listTiles: ArrayList<SourceData>
+    private lateinit var db: DatabaseOpenHelper
 
     init {
-        for(i:Int in 0 until titles.size){
-            listTiles.add(SourceData(titles[i], links[i], dates[0]))
-        }
+        db = DatabaseOpenHelper(context)
+        listTiles = ArrayList()
+        viewData()
     }
+    //hardcoded values that will be replaced by a relational database
 
     override fun getCount(): Int {
         return listTiles.size
@@ -72,5 +64,16 @@ class SourceTileAdapter(context:Context):BaseAdapter(){
         lateinit var name: TextView
         lateinit var link: TextView
         lateinit var date:TextView
+    }
+
+    private fun viewData():ArrayList<SourceData>{
+        val cursor: Cursor = db.viewSourceData(projectName)
+        if(cursor.count == 0){
+            return ArrayList()
+        }
+        while(cursor.moveToNext()){
+            listTiles.add(SourceData(cursor.getString(1), cursor.getString(3), ""))
+        }
+        return listTiles
     }
 }

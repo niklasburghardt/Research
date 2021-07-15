@@ -2,6 +2,7 @@ package com.example.research
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import com.example.research.Dialogs.AlertFragment
+import com.example.research.database.DatabaseOpenHelper
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Project : AppCompatActivity() {
@@ -22,8 +24,10 @@ class Project : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
+        val appName: String = intent.getStringExtra("NAME").toString()
+        setTitle(appName)
+        adapter = SourceTileAdapter(this, appName)
 
-        adapter = SourceTileAdapter(this)
         val list = findViewById<ListView>(R.id.sources_list)
         list.adapter = adapter
         list.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
@@ -36,9 +40,6 @@ class Project : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val appName: String = intent.getStringExtra("NAME").toString()
-        setTitle(appName)
-
 
 
         addNewSource = findViewById(R.id.newSourceProject)
@@ -49,15 +50,11 @@ class Project : AppCompatActivity() {
             intent.putExtra("PROJECT", "projectna")
             startActivity(intent)
         })
-
         alertFragment = AlertFragment()
         list.onItemLongClickListener = AdapterView.OnItemLongClickListener {_, _, position, _ ->
             alertFragment.show(supportFragmentManager, AlertFragment.TAG)
             return@OnItemLongClickListener true
         }
-
-
-
 
     }
 
