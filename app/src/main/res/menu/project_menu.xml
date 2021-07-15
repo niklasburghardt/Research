@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/sort_source_items"
+        android:title="Sortieren" />
+    <item
         android:id="@+id/delete_project"
         android:title="Löschen" />
     <item

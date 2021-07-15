@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ListView
+import android.widget.*
 import com.example.research.Dialogs.AlertFragment
 import com.example.research.database.DatabaseOpenHelper
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class Project : AppCompatActivity() {
@@ -23,6 +21,7 @@ class Project : AppCompatActivity() {
     private lateinit var alertFragment: AlertFragment
     private lateinit var appName:String
     private lateinit var projectId: String
+    private var sortBy: String = "_id"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project)
@@ -38,7 +37,7 @@ class Project : AppCompatActivity() {
         addNewSource.setOnClickListener(fun(_:View){
             intent = Intent(this, AddNewSource::class.java)
             intent.putExtra("FAVORITE", false)
-            intent.putExtra("PROJECT", appName)
+            intent.putExtra("PROJECT", projectId)
             startActivity(intent)
         })
 
@@ -51,7 +50,7 @@ class Project : AppCompatActivity() {
 
     private fun createList(){
 
-        adapter = SourceTileAdapter(this, appName)
+        adapter = SourceTileAdapter(this, appName, sortBy)
 
         val list = findViewById<ListView>(R.id.sources_list)
         list.adapter = adapter
@@ -91,6 +90,7 @@ class Project : AppCompatActivity() {
         return when(item.itemId){
             R.id.details -> openDetailsPage()
             R.id.delete_project -> deleteCurrentProject()
+            R.id.sort_source_items -> showBottomSheetDialog()
             android.R.id.home -> stopApp()
             else -> return true
         }
@@ -114,6 +114,42 @@ class Project : AppCompatActivity() {
         db.deleteProject(projectId.toInt())
         finish()
         return true
+    }
+    private fun showBottomSheetDialog(): Boolean {
+        val btnsheet = layoutInflater.inflate(R.layout.source_sort_dialog, null)
+        val dialog = BottomSheetDialog(this)
+        dialog.setContentView(btnsheet)
+        val createdDateUp = btnsheet.findViewById<LinearLayout>(R.id.created_date_up)
+        val createdDateDown = btnsheet.findViewById<LinearLayout>(R.id.created_at_down)
+        val alphabetTitle = btnsheet.findViewById<LinearLayout>(R.id.alphabet_title)
+        val alphabetLink = btnsheet.findViewById<LinearLayout>(R.id.alphabet_link)
+        createdDateUp.setOnClickListener(fun(_:View){
+            changeSortBy("_id")
+            dialog.dismiss()
+        })
+        createdDateDown.setOnClickListener(fun(_:View){
+            changeSortBy("_id DESC")
+            dialog.dismiss()
+        })
+        alphabetTitle.setOnClickListener(fun(_:View){
+            changeSortBy("title")
+            dialog.dismiss()
+        })
+        alphabetLink.setOnClickListener(fun(_:View){
+            changeSortBy("link")
+            dialog.dismiss()
+        })
+        dialog.show()
+        dialog.show()
+        dialog.setCancelable(true)
+        dialog.show()
+
+        return true
+    }
+
+    private fun changeSortBy(sort: String){
+        sortBy = sort
+        createList()
     }
 
 

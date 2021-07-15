@@ -10,7 +10,7 @@ import android.widget.TextView
 import com.example.research.database.DatabaseOpenHelper
 import kotlin.collections.ArrayList
 
-class SourceTileAdapter(context:Context, val projectName: String):BaseAdapter(){
+class SourceTileAdapter(context:Context, val projectName: String, val sortBy: String):BaseAdapter(){
     private val inflater = LayoutInflater.from(context)
 
     private lateinit var listTiles: ArrayList<SourceData>
@@ -67,7 +67,7 @@ class SourceTileAdapter(context:Context, val projectName: String):BaseAdapter(){
     }
 
     private fun viewData():ArrayList<SourceData>{
-        val cursor: Cursor = db.viewSourceData(projectName)
+        val cursor: Cursor = db.viewSourceData(projectName, sortBy)
         if(cursor.count == 0){
             return ArrayList()
         }

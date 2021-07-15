@@ -21,6 +21,7 @@ class Source : AppCompatActivity() {
     private lateinit var openNotes: FloatingActionButton
     private lateinit var link: String
     private lateinit var id: String
+    private lateinit var projectId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
@@ -28,7 +29,6 @@ class Source : AppCompatActivity() {
         val title: String = intent.getStringExtra("NAME").toString()
         link= intent.getStringExtra("LINK").toString()
         id = intent.getStringExtra("ID").toString()
-        val notes = intent.getStringExtra("NOTES")
         setTitle(title)
 
         webView = findViewById(R.id.webView)
@@ -54,7 +54,6 @@ class Source : AppCompatActivity() {
         openNotes.setOnClickListener(fun(_:View){
             intent = Intent(this, NotesActivity::class.java)
             intent.putExtra("ID", id)
-            intent.putExtra("NOTES", notes)
             startActivity(intent)
         })
     }

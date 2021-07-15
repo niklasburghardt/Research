@@ -106,9 +106,9 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         }
     }
 
-    fun viewSourceData(project_title: String):Cursor{
+    fun viewSourceData(project_title: String, sortBy: String):Cursor{
         val db = readableDatabase
-        val query: String = "SELECT * FROM $tableSourceName, $tableProjectName WHERE project.title == source.project_id AND project.title == '$project_title'"
+        val query: String = "SELECT * FROM $tableSourceName, $tableProjectName WHERE project.title == source.project_id AND project.title == '$project_title' ORDER BY $sortBy"
         val cursor: Cursor = db.rawQuery(query, null)
 
         return cursor
@@ -154,8 +154,6 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
             arrayOf(id.toString())
         )
         Log.d("TAG", "deleted")
-
-        
     }
     fun deleteSource(id: Int){
         val db = writableDatabase
