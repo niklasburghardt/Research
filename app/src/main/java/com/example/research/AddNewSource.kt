@@ -20,10 +20,13 @@ class AddNewSource : AppCompatActivity() {
     private lateinit var openHelper: DatabaseOpenHelper
     private lateinit var projects: ArrayList<String>
     private lateinit var db: DatabaseOpenHelper
+    private lateinit var id: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_source)
         val projectName = intent.getStringExtra("PROJECT").toString()
+        val onlyEdit = intent.getBooleanExtra("EDIT", false)
+        val id = intent.getStringExtra("ID")
         db = DatabaseOpenHelper(this)
         projects = ArrayList()
         viewData()
@@ -41,11 +44,38 @@ class AddNewSource : AppCompatActivity() {
         linkInput = findViewById(R.id.source_link_input)
         isFavorite = findViewById(R.id.source_is_favorite)
 
+        if(onlyEdit){
+            if (id != null) {
+                val cursor: Cursor = db.getSoureById(id.toInt())
+                if(cursor.count == 0){
+                    println("not existing with that id")
+                }
+                while(cursor.moveToNext()){
+                    titleInput.text = cursor.getString(1)
+                    linkInput.text = cursor.getString(3)
+                    isFavorite.isChecked = cursor.getInt(4) == 1
+                    selectProject.setSelection(projects.indexOf(cursor.getString(5)))
+                }
+            }
+        }
+
 
         openHelper = DatabaseOpenHelper(this)
         addButton = findViewById(R.id.addCreatedSource)
         addButton.setOnClickListener(fun(_: View) {
-            openHelper.insertSource(titleInput.text.toString(), "", linkInput.text.toString(), isFavorite.isChecked, selectProject.selectedItem.toString())
+            if(!onlyEdit) {
+                openHelper.insertSource(
+                    titleInput.text.toString(),
+                    "",
+                    linkInput.text.toString(),
+                    isFavorite.isChecked,
+                    selectProject.selectedItem.toString()
+                )
+            }else{
+                if (id != null) {
+                    openHelper.updateEditedSource(id.toInt(), titleInput.text.toString(), linkInput.text.toString(), isFavorite.isChecked, selectProject.selectedItem.toString())
+                }
+            }
             finish()
         })
     }

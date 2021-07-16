@@ -73,6 +73,7 @@ class Source : AppCompatActivity() {
             R.id.details_source -> openDetailsPage()
             R.id.open_browser -> openPageInBrowser()
             R.id.delete_source -> deleteSource()
+            R.id.edit_source_item -> editSource()
             android.R.id.home -> finishApp()
             else -> return true
         }
@@ -83,6 +84,14 @@ class Source : AppCompatActivity() {
         val db = DatabaseOpenHelper(this)
         db.deleteSource(id.toInt())
         finish()
+        return true
+    }
+
+    private fun editSource(): Boolean {
+        val intent = Intent(this, AddNewSource::class.java)
+        intent.putExtra("EDIT", true)
+        intent.putExtra("ID", id)
+        startActivity(intent)
         return true
     }
 

@@ -135,6 +135,21 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         return cursor
     }
 
+    fun getSoureById(id: Int): Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT * FROM $tableSourceName WHERE _id = $id"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
+    fun getProjectById(id: Int): Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT * FROM $tableProjectName WHERE _id = $id"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
+
     fun updateSourceNotes(id: Int, newNotesText: String){
         val db = writableDatabase
         val values = ContentValues()
@@ -144,7 +159,36 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
             values, "$sourceId = ?", arrayOf(id.toString())
         )
         Log.d(TAG, "update(): id=$id -> $sourceUpdated")
+    }
+    fun updateEditedSource(id: Int, newTitle: String, newLink: String, newIsFavorite: Boolean, newProject: String) {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(sourceId, id)
+        values.put(sourceTitle, newTitle)
+        values.put(sourceLink, newLink)
+        values.put(sourceIsFavorite, newIsFavorite)
+        values.put(sourceProjectId, newProject)
 
+        val sourceUpdated = db.update(
+            tableSourceName,
+            values, "$sourceId = ?", arrayOf(id.toString())
+        )
+        Log.d(TAG, "updated(): ID= $id")
+    }
+
+    fun updateEditedProject(id: Int, newTitle: String, newDescription: String, newDueDate: String){
+        val db= writableDatabase
+        val values = ContentValues()
+        values.put(projectId, id)
+        values.put(projectTitle, newTitle)
+        values.put(projectDescription, newDescription)
+        values.put(projectDueDate, newDueDate)
+
+        val projectEditet = db.update(
+            tableProjectName,
+        values, "$projectId = ?", arrayOf(id.toString())
+        )
+        Log.d(TAG, "updated(): Id=$id")
     }
     fun deleteProject(id: Int){
         val db = writableDatabase

@@ -37,7 +37,7 @@ class Project : AppCompatActivity() {
         addNewSource.setOnClickListener(fun(_:View){
             intent = Intent(this, AddNewSource::class.java)
             intent.putExtra("FAVORITE", false)
-            intent.putExtra("PROJECT", projectId)
+            intent.putExtra("PROJECT", appName)
             startActivity(intent)
         })
 
@@ -91,6 +91,7 @@ class Project : AppCompatActivity() {
             R.id.details -> openDetailsPage()
             R.id.delete_project -> deleteCurrentProject()
             R.id.sort_source_items -> showBottomSheetDialog()
+            R.id.edit_project -> editCurrentProject()
             android.R.id.home -> stopApp()
             else -> return true
         }
@@ -98,6 +99,14 @@ class Project : AppCompatActivity() {
 
     override fun onSearchRequested(): Boolean {
         return super.onSearchRequested()
+    }
+
+    private fun editCurrentProject(): Boolean{
+        val intent = Intent(this, AddNewProject::class.java)
+        intent.putExtra("EDIT", true)
+        intent.putExtra("ID", projectId)
+        startActivity(intent)
+        return true
     }
 
     private fun openDetailsPage(): Boolean {
@@ -115,6 +124,7 @@ class Project : AppCompatActivity() {
         finish()
         return true
     }
+    @SuppressLint("ResourceAsColor")
     private fun showBottomSheetDialog(): Boolean {
         val btnsheet = layoutInflater.inflate(R.layout.source_sort_dialog, null)
         val dialog = BottomSheetDialog(this)
@@ -139,6 +149,13 @@ class Project : AppCompatActivity() {
             changeSortBy("link")
             dialog.dismiss()
         })
+        when(sortBy){
+            "_id" -> createdDateUp.setBackgroundColor(R.color.grey)
+            "_id DESC" -> createdDateDown.setBackgroundColor(R.color.grey)
+            "title" -> alphabetTitle.setBackgroundColor(R.color.grey)
+            "link" -> alphabetLink.setBackgroundColor(R.color.grey)
+            else -> return true
+        }
         dialog.show()
         dialog.show()
         dialog.setCancelable(true)

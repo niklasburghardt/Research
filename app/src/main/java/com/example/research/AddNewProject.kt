@@ -1,8 +1,11 @@
 package com.example.research
 
 import android.app.DatePickerDialog
+import android.database.Cursor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.DatePicker
@@ -25,6 +28,9 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_new_project)
 
+        val onlyEdit = intent.getBooleanExtra("EDIT", false)
+        val id = intent.getStringExtra("ID")
+
         datePickerFragment = DatePickerFragment()
         buttonDatePicker = findViewById(R.id.button_date_picker)
         buttonDatePicker.setOnClickListener{
@@ -35,8 +41,31 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
         titleInput = findViewById(R.id.project_title_input)
         detailsInput = findViewById(R.id.project_details_input)
         createProject = findViewById(R.id.addCreatedProject)
+        if(onlyEdit){
+            if (id != null) {
+                val cursor: Cursor = openHelper.getProjectById(id.toInt())
+                if(cursor.count == 0){
+                    println("not existing with that id")
+                }
+                while(cursor.moveToNext()){
+                    titleInput.text = cursor.getString(1)
+                    detailsInput.text = cursor.getString(2)
+                    buttonDatePicker.text = cursor.getString(3)
+                }
+            }
+        }
         createProject.setOnClickListener(fun(_:View){
-            openHelper.insertProject(titleInput.text.toString(), detailsInput.text.toString(), buttonDatePicker.text.toString())
+            if(!onlyEdit) {
+                openHelper.insertProject(
+                    titleInput.text.toString(),
+                    detailsInput.text.toString(),
+                    buttonDatePicker.text.toString()
+                )
+            }else{
+                if (id != null) {
+                    openHelper.updateEditedProject(id.toInt(), titleInput.text.toString(), detailsInput.text.toString(), buttonDatePicker.text.toString())
+                }
+            }
             finish()
         })
 
@@ -51,5 +80,25 @@ class AddNewProject : AppCompatActivity(), DatePickerDialog.OnDateSetListener {
     override fun onPause() {
         super.onPause()
         openHelper.close()
+    }
+    override fun onStart() {
+        super.onStart()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.source_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            android.R.id.home -> finishApp()
+            else -> return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    fun finishApp(): Boolean{
+        finish()
+        return true
     }
 }

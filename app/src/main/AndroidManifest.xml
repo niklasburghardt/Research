@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Research">
         <activity android:name=".NotesActivity" android:label="@string/add_notes" ></activity>
-        <activity android:name=".AddNewProject" android:label="@string/add_project" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".AddNewProject" android:label="@string/add_project"/>
         <activity
             android:name=".SourceDetails"
             android:label="@string/details_name"
