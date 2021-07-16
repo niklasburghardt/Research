@@ -149,6 +149,13 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
 
         return cursor
     }
+    fun getSourcesForProject(id: Int): Cursor{
+        val db = readableDatabase
+        val query: String = "SELECT source.title, $sourceLink, $sourceNotes FROM project, source WHERE project.title = source.project_id AND project._id == $id"
+        val cursor: Cursor = db.rawQuery(query, null)
+
+        return cursor
+    }
 
     fun updateSourceNotes(id: Int, newNotesText: String){
         val db = writableDatabase
@@ -177,6 +184,7 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
     }
 
     fun updateEditedProject(id: Int, newTitle: String, newDescription: String, newDueDate: String){
+        updateSourceWhenProjectChanged(id, newTitle)
         val db= writableDatabase
         val values = ContentValues()
         values.put(projectId, id)
@@ -190,6 +198,16 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
         )
         Log.d(TAG, "updated(): Id=$id")
     }
+    fun updateSourceWhenProjectChanged(oldProjectId: Int, newProjectTitle: String){
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put(sourceProjectId, newProjectTitle)
+        val updatedSource = db.update(
+            tableSourceName,
+            values, "$sourceProjectId = ?", arrayOf(oldProjectId.toString())
+        )
+
+    }
     fun deleteProject(id: Int){
         val db = writableDatabase
         val projectDeleted = db.delete(
@@ -198,6 +216,14 @@ class DatabaseOpenHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_
             arrayOf(id.toString())
         )
         Log.d("TAG", "deleted")
+    }
+    fun deleteSourcesWhenProjectDeleted(deletedProjectTitle: String){
+        val db = writableDatabase
+        val sourceDeleted = db.delete(
+            tableSourceName,
+            "$projectId = ?",
+            arrayOf(deletedProjectTitle)
+        )
     }
     fun deleteSource(id: Int){
         val db = writableDatabase

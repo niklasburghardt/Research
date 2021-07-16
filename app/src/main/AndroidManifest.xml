@@ -11,8 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Research">
-        <activity android:name=".NotesActivity" android:label="@string/add_notes" ></activity>
-        <activity android:name=".AddNewProject" android:label="@string/add_project"/>
+        <activity android:name=".PrintActivity"></activity>
+        <activity android:name=".PdfPrintAdapter"></activity>
+        <activity android:name=".ExportSourcesForProject" />
+        <activity
+            android:name=".NotesActivity"
+            android:label="@string/add_notes" />
+        <activity
+            android:name=".AddNewProject"
+            android:label="@string/add_project" />
         <activity
             android:name=".SourceDetails"
             android:label="@string/details_name"
@@ -20,7 +27,6 @@
         <activity
             android:name=".ProjectDetails"
             android:label="@string/details_name"
-
             android:parentActivityName=".Project" />
         <activity
             android:name=".AddNewSource"
@@ -33,7 +39,7 @@
             android:parentActivityName=".Project" />
         <activity
             android:name=".Project"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

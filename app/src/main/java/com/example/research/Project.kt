@@ -67,6 +67,7 @@ class Project : AppCompatActivity() {
             intent.putExtra("NOTES", notes)
             startActivity(intent)
         }
+
     }
 
     override fun onStart() {
@@ -92,13 +93,19 @@ class Project : AppCompatActivity() {
             R.id.delete_project -> deleteCurrentProject()
             R.id.sort_source_items -> showBottomSheetDialog()
             R.id.edit_project -> editCurrentProject()
+            R.id.export_sources -> exportCurrentProjectSources()
             android.R.id.home -> stopApp()
             else -> return true
         }
     }
 
-    override fun onSearchRequested(): Boolean {
-        return super.onSearchRequested()
+    private fun exportCurrentProjectSources(): Boolean {
+        val intent = Intent(this, ExportSourcesForProject::class.java)
+        intent.putExtra("ID", projectId)
+        intent.putExtra("PROJECT", appName)
+        startActivity(intent)
+        return true
+
     }
 
     private fun editCurrentProject(): Boolean{
@@ -142,18 +149,18 @@ class Project : AppCompatActivity() {
             dialog.dismiss()
         })
         alphabetTitle.setOnClickListener(fun(_:View){
-            changeSortBy("title")
+            changeSortBy("title COLLATE NOCASE ASC")
             dialog.dismiss()
         })
         alphabetLink.setOnClickListener(fun(_:View){
-            changeSortBy("link")
+            changeSortBy("link COLLATE NOCASE ASC")
             dialog.dismiss()
         })
         when(sortBy){
             "_id" -> createdDateUp.setBackgroundColor(R.color.grey)
             "_id DESC" -> createdDateDown.setBackgroundColor(R.color.grey)
-            "title" -> alphabetTitle.setBackgroundColor(R.color.grey)
-            "link" -> alphabetLink.setBackgroundColor(R.color.grey)
+            "title COLLATE NOCASE ASC" -> alphabetTitle.setBackgroundColor(R.color.grey)
+            "link COLLATE NOCASE ASC" -> alphabetLink.setBackgroundColor(R.color.grey)
             else -> return true
         }
         dialog.show()
